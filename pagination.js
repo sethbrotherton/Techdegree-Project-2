@@ -2,7 +2,6 @@ var studentList = document.querySelectorAll('.student-item');
 
 
 function showPage(pageNumber) {
-  var studentList = document.querySelectorAll('.student-item');
   for (var i = 0; i < studentList.length; i++) {
     studentList[i].style.display = 'none';
   }
