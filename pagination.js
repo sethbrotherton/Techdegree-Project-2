@@ -1,12 +1,11 @@
 var studentList = document.querySelectorAll('.student-item');
 
-
 function showPage(pageNumber, list) {
   for (var i = 0; i < list.length; i++) {
     list[i].style.display = 'none';
   }
   for (var i = ((pageNumber * 10) - 10); i < (pageNumber * 10) && i >= ((pageNumber * 10) - 10); i++) {
-    if (list[i] !== undefined) {
+    if (list[i]) {
       list[i].style.display = 'block';
     }
   }
@@ -19,7 +18,7 @@ function appendPageLinks(list) {
   var paginationUl = document.createElement('ul');
   paginationDiv.appendChild(paginationUl);
 
-  for (var i = 0; i < (list.length / 10); i++) {
+  for (var i = 0; i < (Math.ceil(list.length / 10)); i++) {
     var paginationLi = document.createElement('li');
     paginationUl.appendChild(paginationLi);
     var listAnchor = document.createElement('a');
@@ -44,14 +43,26 @@ function addSearch() {
   searchButton.innerHTML = "search";
   search.appendChild(searchButton);
   document.body.appendChild(search);
-  searchInput.addEventListener('submit', function () {
-    for (var i = 0; i < studentList.length; i++) {
-      if (input.value === list[i].innerHTML) {
-        list[i].style = 'block';
-      } else {
-        list[i].style = 'none';
-      }
-    }
-  });
 }
 addSearch();
+
+var searchBar = document.querySelector('.student-search');
+searchBar.addEventListener('keyup', function(e) {
+  var entry = e.target.value.toLowerCase();
+  var listOfStudentsDetails = document.querySelectorAll('li.student-item > .student-details');
+  var listOfStudents = document.querySelectorAll('li.student-item');
+  var filteredStudents = [];
+  for(var i = 0; i < listOfStudents.length; i++) {
+    if(listOfStudentsDetails[i].textContent.toLowerCase().indexOf(entry) != -1) {
+      listOfStudents[i].style.display = 'block';
+      filteredStudents.push(listOfStudents[i]);
+    } else {
+      listOfStudents[i].style.display = 'none';
+    }
+  }
+  $('.pagination').remove();
+  showPage(1, filteredStudents);
+  appendPageLinks(filteredStudents);
+});
+
+document.body.appendChild(searchBar);
