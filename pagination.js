@@ -18,7 +18,7 @@ function appendPageLinks(list) {
   var paginationUl = document.createElement('ul');
   paginationDiv.appendChild(paginationUl);
 
-  for (var i = 0; i < (Math.ceil(list.length / 10)); i++) {
+  for (var i = 0; i <= (list.length / 10); i++) {
     var paginationLi = document.createElement('li');
     paginationUl.appendChild(paginationLi);
     var listAnchor = document.createElement('a');
@@ -26,7 +26,7 @@ function appendPageLinks(list) {
     var anchorText = document.createTextNode([i + 1]);
     listAnchor.appendChild(anchorText);
     listAnchor.addEventListener('click', function (event) {
-      showPage(event.target.innerHTML, studentList);
+      showPage(event.target.innerHTML, list);
     });
   }
   document.body.appendChild(paginationDiv);
@@ -46,23 +46,45 @@ function addSearch() {
 }
 addSearch();
 
+
+var listOfStudentsDetails = document.querySelectorAll('li.student-item > .student-details');
+var listOfStudents = document.querySelectorAll('li.student-item');
 var searchBar = document.querySelector('.student-search');
+var filteredStudents = [];
 searchBar.addEventListener('keyup', function(e) {
+
   var entry = e.target.value.toLowerCase();
-  var listOfStudentsDetails = document.querySelectorAll('li.student-item > .student-details');
-  var listOfStudents = document.querySelectorAll('li.student-item');
-  var filteredStudents = [];
+  // for (var i = 0; i < listOfStudents.length; i++) {
+  //   listOfStudents[i].style.display = 'none';
+  // }
+  // for (var i = 0; i < listOfStudents.length; i++) {
+  //   if(listOfStudentsDetails[i].textContent.toLowerCase().indexOf(entry) != -1) {
+  //
+  //     filteredStudents.push(listOfStudents[i]);
+  //   }
+  // }
+  //
+  // for (var i = 0; i < filteredStudents.length; i++) {
+  //   filteredStudents[i].style.display = 'block';
+  // }
+
+  // for (var i = 0; i < listOfStudents.length; i++) {
+  //   listOfStudents[i].style.display = 'none';
+  // }
+
   for(var i = 0; i < listOfStudents.length; i++) {
+    listOfStudents[i].style.display = 'none';
     if(listOfStudentsDetails[i].textContent.toLowerCase().indexOf(entry) != -1) {
+
       listOfStudents[i].style.display = 'block';
       filteredStudents.push(listOfStudents[i]);
-    } else {
-      listOfStudents[i].style.display = 'none';
+
     }
   }
   $('.pagination').remove();
-  showPage(1, filteredStudents);
   appendPageLinks(filteredStudents);
+  showPage(1, filteredStudents);
+
 });
 
 document.body.appendChild(searchBar);
