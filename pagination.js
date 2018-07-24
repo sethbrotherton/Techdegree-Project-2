@@ -37,54 +37,46 @@ function addSearch() {
   var search = document.createElement('div');
   search.classList.add('student-search');
   var searchInput = document.createElement('input');
+  searchInput.type = 'text';
   searchInput.placeholder = "Search for Students...";
   search.appendChild(searchInput);
   var searchButton = document.createElement('button');
   searchButton.innerHTML = "search";
+  searchButton.type = 'submit';
   search.appendChild(searchButton);
-  document.body.appendChild(search);
+  $('.page-header').prepend(search);
+  // document.body.appendChild(search);
 }
 addSearch();
 
-
-var listOfStudentsDetails = document.querySelectorAll('li.student-item > .student-details');
-var listOfStudents = document.querySelectorAll('li.student-item');
-var searchBar = document.querySelector('.student-search');
 var filteredStudents = [];
-searchBar.addEventListener('keyup', function(e) {
-
+var searchBar = document.querySelector('.student-search');
+// searchBar.addEventListener
+$('.student-search').bind('keyup submit', function(e) {
   var entry = e.target.value.toLowerCase();
-  // for (var i = 0; i < listOfStudents.length; i++) {
-  //   listOfStudents[i].style.display = 'none';
-  // }
-  // for (var i = 0; i < listOfStudents.length; i++) {
-  //   if(listOfStudentsDetails[i].textContent.toLowerCase().indexOf(entry) != -1) {
-  //
-  //     filteredStudents.push(listOfStudents[i]);
-  //   }
-  // }
-  //
-  // for (var i = 0; i < filteredStudents.length; i++) {
-  //   filteredStudents[i].style.display = 'block';
-  // }
-
-  // for (var i = 0; i < listOfStudents.length; i++) {
-  //   listOfStudents[i].style.display = 'none';
-  // }
-
+  var listOfStudentsDetails = document.querySelectorAll('li.student-item > .student-details');
+  var listOfStudents = document.querySelectorAll('li.student-item');
+  filteredStudents = [];
   for(var i = 0; i < listOfStudents.length; i++) {
-    listOfStudents[i].style.display = 'none';
     if(listOfStudentsDetails[i].textContent.toLowerCase().indexOf(entry) != -1) {
-
       listOfStudents[i].style.display = 'block';
       filteredStudents.push(listOfStudents[i]);
 
+    } else {
+      listOfStudents[i].style.display = 'none';
     }
   }
+  // var noResults = $('<h1></h1>').text('Sorry, no results were found.');
+  // if (filteredStudents.length === 0) {
+  //   // $('.no-results').remove();
+  //   $('.page-header').append(noResults);
+  // }
   $('.pagination').remove();
-  appendPageLinks(filteredStudents);
   showPage(1, filteredStudents);
-
+  appendPageLinks(filteredStudents);
 });
 
-document.body.appendChild(searchBar);
+
+
+// document.body.appendChild(searchBar);
+$('.page-header').prepend(searchBar);
