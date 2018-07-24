@@ -1,4 +1,4 @@
-var studentList = document.querySelectorAll('.student-item');
+
 
 function showPage(pageNumber, list) {
   for (var i = 0; i < list.length; i++) {
@@ -10,6 +10,7 @@ function showPage(pageNumber, list) {
     }
   }
 }
+var studentList = $('.student-item');
 showPage(1, studentList);
 
 function appendPageLinks(list) {
@@ -45,38 +46,38 @@ function addSearch() {
   searchButton.type = 'submit';
   search.appendChild(searchButton);
   $('.page-header').prepend(search);
-  // document.body.appendChild(search);
 }
 addSearch();
 
 var filteredStudents = [];
-var searchBar = document.querySelector('.student-search');
-// searchBar.addEventListener
+var searchBar = $('.student-search');
 $('.student-search').bind('keyup submit', function(e) {
   var entry = e.target.value.toLowerCase();
-  var listOfStudentsDetails = document.querySelectorAll('li.student-item > .student-details');
-  var listOfStudents = document.querySelectorAll('li.student-item');
+  var listOfStudentsDetails = $('li.student-item > .student-details');
+  var listOfStudents = $('li.student-item');
   filteredStudents = [];
+  $('.noResultsDisplay').remove();
   for(var i = 0; i < listOfStudents.length; i++) {
     if(listOfStudentsDetails[i].textContent.toLowerCase().indexOf(entry) != -1) {
       listOfStudents[i].style.display = 'block';
       filteredStudents.push(listOfStudents[i]);
-
     } else {
       listOfStudents[i].style.display = 'none';
     }
   }
-  // var noResults = $('<h1></h1>').text('Sorry, no results were found.');
-  // if (filteredStudents.length === 0) {
-  //   // $('.no-results').remove();
-  //   $('.page-header').append(noResults);
-  // }
   $('.pagination').remove();
   showPage(1, filteredStudents);
   appendPageLinks(filteredStudents);
+  noResultsFunc();
 });
 
+function noResultsFunc() {
+  if(filteredStudents.length === 0) {
+    var noResults = $('<h1></h1>').text('Sorry, no results were found.').addClass('noResultsDisplay');
+    $('.page-header').append(noResults);
+  } else {
+    $('.noResultsDisplay').remove();
+  }
+}
 
-
-// document.body.appendChild(searchBar);
 $('.page-header').prepend(searchBar);
